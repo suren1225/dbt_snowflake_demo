@@ -32,9 +32,9 @@ dbt init dbt_snowflake_demo
 
 choose 1 --snowflake
 	WJVMCEO-QN74815  --account
-	SURENDIRAN  --username
+	--give your snowflake password
 choose 1 --password
-	Yellowcolor12@
+	--give your snowflake password
 
 ACCOUNTADMIN  --role
 DEMO_WH --warehouse
@@ -115,3 +115,18 @@ dbt run --select stg_orders+ (downstream)
 dbt run --select +mart_daily_sales (upstream)
 dbt run --select models/mart (sepcific model all files)
 dbt run --select models/mart/mart_customer_history  (sepcific model file)
+
+
+--git integration
+================
+bash
+
+cd C:\dbt-demo\dbt_snowflake_demo
+git init
+git status
+git remote add origin https://github.com/suren1225/dbt_snowflake_demo.git
+git remote -v
+git add .
+git commit -m "initial dbt snowflake project"
+git branch -M main
+git push -u origin main
