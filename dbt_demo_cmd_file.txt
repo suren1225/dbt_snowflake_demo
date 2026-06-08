@@ -1,0 +1,117 @@
+local dbtsetup --cmd
+=====================
+C:\Users\SurendiranV>python --version
+Python 3.11.9
+
+C:\Users\SurendiranV>pip --version
+pip 24.0 from C:\Users\SurendiranV\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+
+C:\Users\SurendiranV>mkdir c:\dbt-demo
+
+C:\Users\SurendiranV>cd c:\dbt-demo
+
+c:\dbt-demo>python -m venv dbt-env
+
+c:\dbt-demo>dbt-env\Scripts\activate
+
+(dbt-env) c:\dbt-demo>pip install dbt-snowflake
+
+(dbt-env) c:\dbt-demo>dbt --version
+
+
+create snowflake account - trial
+=====================
+https://signup.snowflake.com/?utm_source=chatgpt.com
+
+
+configure snowflake --cmd
+============================== 	
+cd C:\dbt-demo
+
+dbt init dbt_snowflake_demo
+
+choose 1 --snowflake
+	WJVMCEO-QN74815  --account
+	SURENDIRAN  --username
+choose 1 --password
+	Yellowcolor12@
+
+ACCOUNTADMIN  --role
+DEMO_WH --warehouse
+ANALYTICS_DB --database
+STAGING --schema
+choose 1 --thread
+
+
+verify project.yml file
+=====================
+C:\Users\SurendiranV\.dbt\profiles.yml  (target db information)
+ 
+C:\dbt-demo\dbt_snowflake_demo\dbt_project.yml  (schema, meterialization)
+  
+--================================================================================
+
+cd c:\dbt-demo
+
+python -m venv dbt-env
+
+1. Go to project folder
+cd c:\dbt-demo\dbt_snowflake_demo
+
+2. Activate environment (if using venv)
+dbt-env\Scripts\activate
+
+3. Check dbt connection, Clear local cache,Install packages, Show final SQL
+dbt debug
+dbt clean
+dbt deps
+dbt compile
+
+4. Load seed data (reference tables)
+dbt seed
+
+5. Load RAW → STAGING models
+dbt run --select staging
+
+6. Run STAGING tests
+dbt test --select staging
+
+7. Build INTERMEDIATE layer
+dbt run --select intermediate
+
+8. Test INTERMEDIATE layer (custom + generic)
+dbt test --select intermediate
+
+9. Run SNAPSHOTS (if you created them)
+dbt snapshot
+
+10. Build MARTS layer
+dbt run --select marts
+
+11. Run MART tests (relationships + validations)
+dbt test --select marts
+
+12. Run FULL PIPELINE - Rebuild everything
+dbt build --full-refresh
+
+13. Run FULL PIPELINE 
+dbt build
+
+14. Run custom SQL tests
+dbt test --select test_type:singular
+
+15. Generate documentation
+dbt docs generate
+
+16. Serve dbt documentation UI
+dbt docs serve --host 0.0.0.0 --port 8081
+
+ http://localhost:8081
+ 
+Note:
+====
+dbt run (all models)
+dbt run --select stg_orders+ (downstream)
+dbt run --select +mart_daily_sales (upstream)
+dbt run --select models/mart (sepcific model all files)
+dbt run --select models/mart/mart_customer_history  (sepcific model file)

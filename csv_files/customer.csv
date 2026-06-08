@@ -1,0 +1,16 @@
+customer_id,name,city,country,signup_date,segment
+1001,John Smith,New York,USA,2024-01-15,Consumer
+1002,Mary Johnson,Chicago,USA,2024-02-10,Corporate
+1003,David Brown,London,UK,2024-03-05,Consumer
+1004,Sarah Wilson,Toronto,Canada,2024-03-20,Consumer
+1005,James Taylor,Sydney,Australia,2024-04-12,Corporate
+1006,Emma Davis,Manchester,UK,2024-05-01,Consumer
+1007,Michael Lee,Singapore,Singapore,2024-05-15,Corporate
+1008,Olivia White,Dubai,UAE,2024-06-01,Consumer
+1009,Daniel Harris,Chennai,India,2024-06-15,Consumer
+1010,Sophia Martin,Bangalore,India,2024-07-01,Corporate
+1011,William Clark,Mumbai,India,2024-07-15,Consumer
+1012,Ava Lewis,Delhi,India,2024-08-01,Consumer
+1013,Noah Walker,Paris,France,2024-08-20,Corporate
+1014,Isabella Hall,Berlin,Germany,2024-09-05,Consumer
+1015,Liam Young,Madrid,Spain,2024-09-18,Corporate

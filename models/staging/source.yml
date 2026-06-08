@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw
+
+    database: ANALYTICS_DB
+    schema: RAW
+
+    tables:
+
+      - name: customers
+
+      - name: products
+
+      - name: orders

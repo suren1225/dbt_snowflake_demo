@@ -1,0 +1,27 @@
+version: 2
+
+models:
+
+  - name: mart_customer_summary
+
+    columns:
+
+      - name: customer_id
+
+        tests:
+
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+
+  - name: mart_product_performance
+
+    columns:
+
+      - name: product_id
+
+        tests:
+
+          - relationships:
+              to: ref('stg_products')
+              field: product_id

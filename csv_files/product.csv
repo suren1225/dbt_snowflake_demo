@@ -1,0 +1,11 @@
+product_id,name,category,cost_price,supplier_id
+P001,Laptop Pro,Electronics,700,501
+P002,Wireless Mouse,Electronics,15,501
+P003,Mechanical Keyboard,Electronics,40,502
+P004,Office Chair,Furniture,80,503
+P005,Standing Desk,Furniture,180,503
+P006,Monitor 24 Inch,Electronics,120,501
+P007,USB Hub,Accessories,10,504
+P008,Webcam HD,Accessories,25,504
+P009,Noise Cancelling Headphones,Electronics,90,502
+P010,Notebook Pack,Stationery,5,505

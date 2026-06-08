@@ -1,0 +1,133 @@
+SELECT CURRENT_ACCOUNT();
+SELECT CURRENT_REGION();
+SELECT CURRENT_ROLE();
+SELECT CURRENT_WAREHOUSE();
+
+CREATE WAREHOUSE IF NOT EXISTS DEMO_WH
+WITH
+    WAREHOUSE_SIZE = 'XSMALL'
+    AUTO_SUSPEND = 60
+    AUTO_RESUME = TRUE
+    INITIALLY_SUSPENDED = TRUE;
+
+CREATE DATABASE IF NOT EXISTS ANALYTICS_DB;
+USE DATABASE ANALYTICS_DB;
+
+CREATE SCHEMA IF NOT EXISTS RAW;ANALYTICS_DB.RAW.RAW_STAGE
+CREATE SCHEMA IF NOT EXISTS STAGING;
+CREATE SCHEMA IF NOT EXISTS INTERMEDIATE;
+CREATE SCHEMA IF NOT EXISTS MARTS;
+
+SELECT CURRENT_SCHEMA();
+
+SHOW WAREHOUSES;
+SHOW DATABASES;
+SHOW SCHEMAS;
+
+USE WAREHOUSE DEMO_WH;
+USE DATABASE ANALYTICS_DB;
+USE SCHEMA RAW;
+
+SELECT CURRENT_USER();
+SELECT CURRENT_SCHEMA();
+CREATE OR REPLACE STAGE RAW_STAGE;
+ 
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
+TYPE = CSV
+SKIP_HEADER = 1
+FIELD_OPTIONALLY_ENCLOSED_BY = '"';
+
+SHOW FILE FORMATS;
+
+CREATE OR REPLACE TABLE RAW.CUSTOMERS (
+    customer_id NUMBER,
+    name STRING,
+    city STRING,
+    country STRING,
+    signup_date DATE,
+    segment STRING
+);
+
+CREATE OR REPLACE TABLE RAW.PRODUCTS (
+    product_id STRING,
+    name STRING,
+    category STRING,
+    cost_price NUMBER(10,2),
+    supplier_id NUMBER
+);
+
+CREATE OR REPLACE TABLE RAW.ORDERS (
+    order_id STRING,
+    customer_id NUMBER,
+    product_id STRING,
+    order_date DATE,
+    quantity NUMBER,
+    unit_price NUMBER(10,2),
+    status STRING
+);
+
+SHOW tables;
+
+COPY INTO RAW.CUSTOMERS
+FROM @RAW_STAGE/customer.csv
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+COPY INTO RAW.ORDERS
+FROM @RAW_STAGE/orders.csv
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+COPY INTO RAW.PRODUCTS
+FROM @RAW_STAGE/product.csv
+FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
+
+list @raw_stage;
+
+
+select * from RAW.CUSTOMERS;
+select * from RAW.ORDERS;
+select * from RAW.PRODUCTS;
+
+
+select * from staging.stg_orders;
+
+INSERT INTO RAW.ORDERS
+VALUES
+(
+'O99999',
+1001,
+'P001',
+CURRENT_DATE(),
+1,
+900,
+'Completed'
+);
+
+select * from staging.stg_CUSTOMERS;
+select * from staging.stg_products;
+select * from staging.stg_orders;
+
+select
+order_id,
+count(*)
+from RAW.ORDERS
+group by 1
+having count(*) > 1;
+
+select *
+from RAW.CUSTOMERS
+where customer_id is null;
+
+select distinct status
+from RAW.ORDERS;
+
+select * from ANALYTICS_DB.INTERMEDIATE.INT_ORDER_DETAILS;
+
+select * from ANALYTICS_DB.marts.mart_customer_summary;
+
+select * from ANALYTICS_DB.marts.mart_daily_sales;
+
+select * from ANALYTICS_DB.marts.mart_product_performance;
+ 
+
+ 
+ 
