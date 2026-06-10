@@ -45,21 +45,23 @@ choose 1 --thread
 
 verify project.yml file
 =====================
-C:\Users\SurendiranV\.dbt\profiles.yml  (target db information)
+C:\dbt-demo\dbt_snowflake_demo\profiles.yml  (target db information)
  
 C:\dbt-demo\dbt_snowflake_demo\dbt_project.yml  (schema, meterialization)
   
 --================================================================================
 
-cd c:\dbt-demo
+
 
 python -m venv dbt-env
 
 1. Go to project folder
-cd c:\dbt-demo\dbt_snowflake_demo
+cd c:\dbt-demo
 
 2. Activate environment (if using venv)
 dbt-env\Scripts\activate
+
+cd C:\dbt-demo\dbt_snowflake_demo
 
 3. Check dbt connection, Clear local cache,Install packages, Show final SQL
 dbt debug

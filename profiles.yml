@@ -1,0 +1,13 @@
+dbt_snowflake_demo:
+  outputs:
+    dev:
+      account: WJVMCEO-QN74815
+      database: ANALYTICS_DB
+      password: Yellowcolor12@
+      role: ACCOUNTADMIN
+      schema: STAGING
+      threads: 1
+      type: snowflake
+      user: SURENDIRAN
+      warehouse: DEMO_WH
+  target: dev

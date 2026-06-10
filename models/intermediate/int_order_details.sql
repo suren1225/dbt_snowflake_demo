@@ -1,6 +1,16 @@
-{{ config(
-    materialized='view'
-) }}
+{{
+    config(
+        materialized='view',
+
+        pre_hook=[
+            "{{ audit_row_count(ref('stg_orders'), 'BEFORE') }}"
+        ],
+
+        post_hook=[
+            "{{ audit_row_count(this, 'AFTER') }}"
+        ]
+    )
+}}
 
 select
 

@@ -13,7 +13,7 @@ WITH
 CREATE DATABASE IF NOT EXISTS ANALYTICS_DB;
 USE DATABASE ANALYTICS_DB;
 
-CREATE SCHEMA IF NOT EXISTS RAW;ANALYTICS_DB.RAW.RAW_STAGE
+CREATE SCHEMA IF NOT EXISTS RAW;
 CREATE SCHEMA IF NOT EXISTS STAGING;
 CREATE SCHEMA IF NOT EXISTS INTERMEDIATE;
 CREATE SCHEMA IF NOT EXISTS MARTS;
@@ -120,14 +120,31 @@ where customer_id is null;
 select distinct status
 from RAW.ORDERS;
 
-select * from ANALYTICS_DB.INTERMEDIATE.INT_ORDER_DETAILS;
+select *
+from ANALYTICS_DB.INTERMEDIATE.INT_ORDER_DETAILS
+limit 10;
+
+select *
+from ANALYTICS_DB.INTERMEDIATE.INT_ORDER_DETAILS
+limit 10;
 
 select * from ANALYTICS_DB.marts.mart_customer_summary;
 
 select * from ANALYTICS_DB.marts.mart_daily_sales;
 
 select * from ANALYTICS_DB.marts.mart_product_performance;
- 
 
- 
- 
+
+CREATE SCHEMA IF NOT EXISTS CUSTOM_LOG_METADATA;
+use schema CUSTOM_LOG_METADATA;
+
+ CREATE TABLE IF NOT EXISTS AUDIT_LOG (
+    audit_id NUMBER AUTOINCREMENT,
+    model_name STRING,
+    audit_type STRING,
+    row_count NUMBER,
+    audit_timestamp TIMESTAMP
+);
+
+
+select * from AUDIT_LOG;
