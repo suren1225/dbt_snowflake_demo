@@ -1,0 +1,16 @@
+EMP_ID,EMP_NAME,MANAGER_ID
+1,John,
+2,Mike,1
+3,David,1
+4,Sarah,2
+5,James,2
+6,Emily,3
+7,Robert,3
+8,Lisa,4
+9,Kevin,4
+10,Sophia,5
+11,Daniel,5
+12,Olivia,6
+13,William,6
+14,Emma,7
+15,Noah,7

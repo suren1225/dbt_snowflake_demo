@@ -1,7 +1,4 @@
-SELECT CURRENT_ACCOUNT();
-SELECT CURRENT_REGION();
-SELECT CURRENT_ROLE();
-SELECT CURRENT_WAREHOUSE();
+SELECT CURRENT_ACCOUNT(),CURRENT_REGION(),CURRENT_ROLE(),CURRENT_WAREHOUSE(),CURRENT_DATABASE();
 
 CREATE WAREHOUSE IF NOT EXISTS DEMO_WH
 WITH
@@ -10,13 +7,16 @@ WITH
     AUTO_RESUME = TRUE
     INITIALLY_SUSPENDED = TRUE;
 
+DROP DATABASE ANALYTICS_DB;
+
 CREATE DATABASE IF NOT EXISTS ANALYTICS_DB;
 USE DATABASE ANALYTICS_DB;
 
 CREATE SCHEMA IF NOT EXISTS RAW;
-CREATE SCHEMA IF NOT EXISTS STAGING;
-CREATE SCHEMA IF NOT EXISTS INTERMEDIATE;
-CREATE SCHEMA IF NOT EXISTS MARTS;
+CREATE SCHEMA IF NOT EXISTS CUSTOM_LOG_METADATA;
+-- CREATE SCHEMA IF NOT EXISTS STAGING;
+-- CREATE SCHEMA IF NOT EXISTS INTERMEDIATE;
+-- CREATE SCHEMA IF NOT EXISTS MARTS;
 
 SELECT CURRENT_SCHEMA();
 
@@ -31,6 +31,12 @@ USE SCHEMA RAW;
 SELECT CURRENT_USER();
 SELECT CURRENT_SCHEMA();
 CREATE OR REPLACE STAGE RAW_STAGE;
+
+SHOW STAGES;
+
+--upload files to stage
+
+list @raw_stage;
  
 CREATE OR REPLACE FILE FORMAT CSV_FORMAT
 TYPE = CSV
@@ -68,6 +74,19 @@ CREATE OR REPLACE TABLE RAW.ORDERS (
 
 SHOW tables;
 
+use schema CUSTOM_LOG_METADATA;
+
+ CREATE TABLE IF NOT EXISTS AUDIT_LOG (
+    audit_id NUMBER AUTOINCREMENT,
+    model_name STRING,
+    audit_type STRING,
+    row_count NUMBER,
+    audit_timestamp TIMESTAMP
+);
+
+
+USE SCHEMA RAW;
+
 COPY INTO RAW.CUSTOMERS
 FROM @RAW_STAGE/customer.csv
 FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
@@ -80,15 +99,26 @@ COPY INTO RAW.PRODUCTS
 FROM @RAW_STAGE/product.csv
 FILE_FORMAT=(FORMAT_NAME='CSV_FORMAT');
 
-list @raw_stage;
-
 
 select * from RAW.CUSTOMERS;
 select * from RAW.ORDERS;
 select * from RAW.PRODUCTS;
 
+--dbt debug
+--dbt clean
+--dbt deps
+--dbt compile
 
+--dbt run --select staging
+
+select * from staging.stg_CUSTOMERS;
+select * from staging.stg_products;
 select * from staging.stg_orders;
+
+---dbt test --select staging
+
+select * from staging.stg_orders
+where order_id='O99999';
 
 INSERT INTO RAW.ORDERS
 VALUES
@@ -102,9 +132,23 @@ CURRENT_DATE(),
 'Completed'
 );
 
-select * from staging.stg_CUSTOMERS;
-select * from staging.stg_products;
-select * from staging.stg_orders;
+select * from RAW.ORDERS
+where order_id='O99999';
+ 
+--dbt run --select stg_orders
+--dbt test --select stg_orders
+
+select * from staging.stg_orders 
+where order_id='O99999';
+
+
+--upload seed file to folder
+--dbt seed
+
+--dbt run --select intermediate
+--dbt test --select intermediate
+
+select * from intermediate.int_order_details;
 
 select
 order_id,
@@ -128,23 +172,21 @@ select *
 from ANALYTICS_DB.INTERMEDIATE.INT_ORDER_DETAILS
 limit 10;
 
+--dbt snapshot
+
+select * from snapshots.customer_snapshot;
+SHOW SCHEMAS;
+
+
+--dbt run --select marts
+
 select * from ANALYTICS_DB.marts.mart_customer_summary;
 
 select * from ANALYTICS_DB.marts.mart_daily_sales;
 
 select * from ANALYTICS_DB.marts.mart_product_performance;
 
-
-CREATE SCHEMA IF NOT EXISTS CUSTOM_LOG_METADATA;
-use schema CUSTOM_LOG_METADATA;
-
- CREATE TABLE IF NOT EXISTS AUDIT_LOG (
-    audit_id NUMBER AUTOINCREMENT,
-    model_name STRING,
-    audit_type STRING,
-    row_count NUMBER,
-    audit_timestamp TIMESTAMP
-);
+select * from ANALYTICS_DB.marts.mart_customer_history;
 
 
-select * from AUDIT_LOG;
+select * from CUSTOM_LOG_METADATA.AUDIT_LOG;

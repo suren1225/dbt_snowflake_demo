@@ -3,11 +3,11 @@ dbt_snowflake_demo:
     dev:
       account: WJVMCEO-QN74815
       database: ANALYTICS_DB
-      password: Yellowcolor12@
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
       role: ACCOUNTADMIN
       schema: STAGING
       threads: 1
       type: snowflake
-      user: SURENDIRAN
       warehouse: DEMO_WH
   target: dev
